@@ -1,0 +1,156 @@
+<div class="container-fluid mt-5">
+  <div class="row">
+    <!-- Purchase Table -->
+    <div class="col-md-6">
+      <div class="card shadow-lg mb-4">
+        <div class="card-header bg-success text-white">
+          <h4 class="mb-0">Purchase Records</h4>
+        </div>
+        <div class="card-body">
+          <input class="form-control mb-3" placeholder="Search Purchase..." [(ngModel)]="purchaseSearchTerm" (input)="filterPurchases()" />
+          <table class="table table-bordered table-hover text-center">
+            <thead class="table-dark">
+              <tr>
+                <th>Product</th>
+                <th>Supplier</th>
+                <th>Unit Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let p of filteredPurchases">
+                <td>{{ p.productName }}</td>
+                <td>{{ p.supplierName }}</td>
+                <td>{{ p.unitPrice }}</td>
+                <td>{{ p.purchaseQuantity }}</td>
+                <td>{{ p.totalAmount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sales Table -->
+    <div class="col-md-6">
+      <div class="card shadow-lg mb-4">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Sales Records</h4>
+        </div>
+        <div class="card-body">
+          <input class="form-control mb-3" placeholder="Search Sales..." [(ngModel)]="salesSearchTerm" (input)="filterSales()" />
+          <table class="table table-bordered table-hover text-center">
+            <thead class="table-dark">
+              <tr>
+                <th>Product</th>
+                <th>Customer</th>
+                <th>Unit Price</th>
+                <th>Qty</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let s of filteredSales">
+                <td>{{ s.productName }}</td>
+                <td>{{ s.customerName }}</td>
+                <td>{{ s.unitPrice }}</td>
+                <td>{{ s.salesQuantity }}</td>
+                <td>{{ s.totalAmount }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Summary Section -->
+  <div class="card shadow-lg">
+    <div class="card-header bg-dark text-white">
+      <h4 class="mb-0">Profit & Loss Summary</h4>
+    </div>
+    <div class="card-body">
+      <div class="row text-center mb-3">
+        <div class="col-md-4">
+          <h5>Total Purchase</h5>
+          <p class="text-danger fw-bold"><span style="font-size: 1.5rem;">৳</span> {{ totalPurchase }}</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Total Sales</h5>
+          <p class="text-success fw-bold"><span style="font-size: 1.5rem;">৳</span> {{ totalSales }}</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Profit / Loss</h5>
+          <p [ngClass]="{'text-success': profitOrLoss >= 0, 'text-danger': profitOrLoss < 0}" class="fw-bold">
+            <span style="font-size: 1.5rem;">৳</span> {{ profitOrLoss }}
+          </p>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <!-- Product-wise Summary -->
+        <div class="col-md-12">
+          <h5 class="text-white bg-secondary p-2 rounded text-center shadow" style="text-align: center;">Product-wise Summary</h5><br>
+          <table class="table table-sm table-bordered text-center">
+            <thead class="table-success">
+              <tr>
+                <th>Product</th>
+                <th>Purchase</th>
+                <th>Sales</th>
+                <th>Profit/Loss</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let key of objectKeys(productSummary)">
+                <td>{{ key }}</td>
+                <td>{{ productSummary[key].purchase }}</td>
+                <td>{{ productSummary[key].sales }}</td>
+                <td>{{ productSummary[key].sales - productSummary[key].purchase }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row">
+        <div class="col-md-12">
+          <h5 class="text-white bg-secondary p-2 rounded text-center shadow" style="text-align: center;">Supplier & Customer Summary</h5><br>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+          <h5 class="text-success"><strong>Supplier-wise Purchase</strong></h5>
+          <ul class="list-group mb-3">
+            <li class="list-group-item" *ngFor="let key of objectKeys(supplierWisePurchase)">
+              {{ key }}: <span style="font-size: 1.5rem;">৳</span> {{ supplierWisePurchase[key] }}
+            </li>
+          </ul>        
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <h5 class="text-primary"><strong>Customer-wise Sales</strong></h5>
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let key of objectKeys(customerWiseSales)">
+              {{ key }}: <span style="font-size: 1.5rem;">৳</span> {{ customerWiseSales[key] }}
+            </li>
+          </ul>        
+        </div>        
+      </div>
+
+      <div class="row mt-4 text-center">
+        <div class="col-md-6">
+          <h6><strong>Total Suppliers:</strong></h6>
+          <p class="fw-bold text-info">{{ supplierCount }}</p>
+        </div>
+        <div class="col-md-6">
+          <h6><strong>Total Customers:</strong></h6>
+          <p class="fw-bold text-info">{{ customerCount }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

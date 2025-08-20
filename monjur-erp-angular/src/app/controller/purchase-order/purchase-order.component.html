@@ -1,0 +1,221 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header text-white" style="background-color: #d702b4;">
+      <h2 class="mb-0">Add a New Purchase Order</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #poForm="ngForm" (ngSubmit)="save(purchaseOrder)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Purchase Order Code:</label>
+            <input type="number" name="purchaseOrderCode" class="form-control" [(ngModel)]="purchaseOrder.purchaseOrderCode" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Select Supplier:</label>
+            <select name="supplier" class="form-control" (change)="onSupplierSelect($event)">
+              <option value="">-- Select Supplier --</option>
+              <option *ngFor="let supp of suppliers" [value]="supp.supplierCode" [selected]="supp.supplierCode === purchaseOrder.supplierCode">{{supp.supplierName}} ({{supp.supplierCode}})</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Supplier Code:</label>
+            <input type="number" name="supplierCode" class="form-control" [(ngModel)]="purchaseOrder.supplierCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Supplier Name:</label>
+            <input type="text" name="supplierName" class="form-control" [(ngModel)]="purchaseOrder.supplierName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Order Date:</label>
+            <input type="date" name="orderDate" class="form-control" [(ngModel)]="purchaseOrder.orderDate" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Received Date:</label>
+            <input type="date" name="receivedDate" class="form-control" [(ngModel)]="purchaseOrder.receivedDate" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Select Product:</label>
+            <select name="product" class="form-control" (change)="onProductSelect($event)">
+              <option value="">-- Select Product --</option>
+              <option *ngFor="let prod of products" [value]="prod.productCode" [selected]="prod.productCode === purchaseOrder.productCode">{{prod.productName}} ({{prod.productCode}})</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Code:</label>
+            <input type="number" name="productCode" class="form-control" [(ngModel)]="purchaseOrder.productCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Name:</label>
+            <input type="text" name="productName" class="form-control" [(ngModel)]="purchaseOrder.productName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Unit Price:</label>
+            <input type="number" name="unitPrice" class="form-control" [(ngModel)]="purchaseOrder.unitPrice" (ngModelChange)="calculateTotalAmount()" required />
+          </div>          
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Purchase Quantity:</label>
+            <input type="number" name="purchaseQuantity" class="form-control" [(ngModel)]="purchaseOrder.purchaseQuantity" (ngModelChange)="calculateTotalAmount()" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Total Amount:</label>
+            <input type="number" name="totalAmount" class="form-control" [(ngModel)]="purchaseOrder.totalAmount" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Payment Status:</label>
+            <select name="paymentStatus" class="form-control" [(ngModel)]="purchaseOrder.paymentStatus" required>
+              <option>Unpaid</option>
+              <option>Paid</option>
+              <option>Partial</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Status:</label>
+            <select name="status" class="form-control" [(ngModel)]="purchaseOrder.status">
+              <option>Pending</option>
+              <option>Received</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Purchase Order</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Code</th>
+          <th>Supplier Code</th>
+          <th>Supplier Name</th>
+          <th>Order Date</th>
+          <th>Received Date</th>
+          <th>Product Code</th>
+          <th>Product Name</th>
+          <th>Unit Price</th>          
+          <th>Purchase Quantity</th>
+          <th>Total Amount</th>
+          <th>Payment Status</th>
+          <th>Status</th>
+          <th>Edit</th>
+          <th>Delete</th>          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let po of purchaseOrders">
+          <td>{{ po.purchaseOrderCode }}</td>
+          <td>{{ po.supplierCode }}</td>
+          <td>{{ po.supplierName }}</td>
+          <td>{{ po.orderDate | date }}</td>
+          <td>{{ po.receivedDate | date }}</td>
+          <td>{{ po.productCode }}</td>
+          <td>{{ po.productName }}</td>
+          <td>{{ po.unitPrice }}</td>          
+          <td>{{ po.purchaseQuantity }}</td>
+          <td>{{ po.totalAmount }}</td>
+          <td>{{ po.paymentStatus }}</td>
+          <td>{{ po.status }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(po)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(po)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Purchase Order</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #poEditForm="ngForm" (ngSubmit)="update(updatePurchaseOrder)">
+          <input type="hidden" name="id" [(ngModel)]="updatePurchaseOrder.id" />
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Purchase Order Code:</label>
+              <input type="number" name="purchaseOrderCode" class="form-control" [(ngModel)]="updatePurchaseOrder.purchaseOrderCode" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Supplier:</label>
+              <select name="updateSupplier" class="form-control" (change)="onUpdateSupplierSelect($event)">
+                <option value="">-- Select Supplier --</option>
+                <option *ngFor="let supp of suppliers" [value]="supp.supplierCode" [selected]="supp.supplierCode === updatePurchaseOrder.supplierCode">{{supp.supplierName}} ({{supp.supplierCode}})</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Supplier Code:</label>
+              <input type="number" name="supplierCode" class="form-control" [(ngModel)]="updatePurchaseOrder.supplierCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Supplier Name:</label>
+              <input type="text" name="supplierName" class="form-control" [(ngModel)]="updatePurchaseOrder.supplierName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Order Date:</label>
+              <input type="date" name="orderDate" class="form-control" [(ngModel)]="updatePurchaseOrder.orderDate" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Received Date:</label>
+              <input type="date" name="receivedDate" class="form-control" [(ngModel)]="updatePurchaseOrder.receivedDate" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Product:</label>
+              <select name="updateProduct" class="form-control" (change)="onUpdateProductSelect($event)">
+                <option value="">-- Select Product --</option>
+                <option *ngFor="let prod of products" [value]="prod.productCode" [selected]="prod.productCode === updatePurchaseOrder.productCode">{{prod.productName}} ({{prod.productCode}})</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Code:</label>
+              <input type="number" name="productCode" class="form-control" [(ngModel)]="updatePurchaseOrder.productCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Name:</label>
+              <input type="text" name="productName" class="form-control" [(ngModel)]="updatePurchaseOrder.productName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Unit Price:</label>
+              <input type="number" name="unitPrice" class="form-control" [(ngModel)]="updatePurchaseOrder.unitPrice" (ngModelChange)="calculateUpdateTotalAmount()" required />
+            </div>            
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Purchase Quantity:</label>
+              <input type="number" name="purchaseQuantity" class="form-control" [(ngModel)]="updatePurchaseOrder.purchaseQuantity" (ngModelChange)="calculateUpdateTotalAmount()" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Total Amount:</label>
+              <input type="number" name="totalAmount" class="form-control" [(ngModel)]="updatePurchaseOrder.totalAmount" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Payment Status:</label>
+              <select name="paymentStatus" class="form-control" [(ngModel)]="updatePurchaseOrder.paymentStatus" required>
+                <option>Unpaid</option>
+                <option>Paid</option>
+                <option>Partial</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status:</label>
+              <select name="status" class="form-control" [(ngModel)]="updatePurchaseOrder.status">
+                <option>Pending</option>
+                <option>Received</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

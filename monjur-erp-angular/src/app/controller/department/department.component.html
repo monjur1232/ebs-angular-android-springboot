@@ -1,0 +1,81 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Add a New Department</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #deptForm="ngForm" (ngSubmit)="save(department)">
+        <div class="mb-3">
+          <label for="deptName" class="form-label">Department Code:</label>
+          <input type="number" id="deptCode" name="departmentCode" class="form-control"
+                 [(ngModel)]="department.departmentCode" required>
+        </div>
+        <div class="mb-3">
+          <label for="deptName" class="form-label">Department Name:</label>
+          <input type="text" id="deptName" name="departmentName" class="form-control"
+                 [(ngModel)]="department.departmentName" required>
+        </div>
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-save"></i> Save
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Department</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Department Code</th>
+          <th>Department Name</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let dept of departments">
+          <td>{{ dept.departmentCode }}</td>
+          <td>{{ dept.departmentName }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(dept)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(dept)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h4 class="mb-0">Update Department</h4>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #deptEditForm="ngForm" (ngSubmit)="update(updateDepartment)">
+          <input type="hidden" name="id" [(ngModel)]="updateDepartment.id" />
+          <div class="mb-3">
+            <label class="form-label">Department Code:</label>
+            <input type="number" class="form-control" name="departmentCode"
+                   [(ngModel)]="updateDepartment.departmentCode" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Department Name:</label>
+            <input type="text" class="form-control" name="departmentName"
+                   [(ngModel)]="updateDepartment.departmentName" required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

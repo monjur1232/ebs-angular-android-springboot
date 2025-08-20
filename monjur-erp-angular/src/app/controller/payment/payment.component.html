@@ -1,0 +1,175 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Add a New Payment</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #paymentForm="ngForm" (ngSubmit)="save(payment)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Payment Code:</label>
+            <input type="number" name="paymentCode" class="form-control" [(ngModel)]="payment.paymentCode" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Select Supplier:</label>
+            <select name="supplier" class="form-control" (change)="onSupplierSelect($event)">
+              <option value="">-- Select Supplier --</option>
+              <option *ngFor="let supp of suppliers" [value]="supp.supplierCode" [selected]="supp.supplierCode === payment.supplierCode">{{supp.supplierName}} ({{supp.supplierCode}})</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Select Purchase Order:</label>
+            <select name="purchaseOrder" class="form-control" (change)="onPurchaseOrderSelect($event)" [disabled]="!filteredPurchaseOrders.length">
+              <option value="">-- Select Purchase Order --</option>
+              <option *ngFor="let po of filteredPurchaseOrders" [value]="po.purchaseOrderCode" [selected]="po.purchaseOrderCode === payment.purchaseOrderCode">PO# {{po.purchaseOrderCode}} (Amount: {{po.totalAmount}})</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Supplier Code:</label>
+            <input type="number" name="supplierCode" class="form-control" [(ngModel)]="payment.supplierCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Supplier Name:</label>
+            <input type="text" name="supplierName" class="form-control" [(ngModel)]="payment.supplierName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Purchase Order Code:</label>
+            <input type="number" name="purchaseOrderCode" class="form-control" [(ngModel)]="payment.purchaseOrderCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Amount Paid:</label>
+            <input type="number" name="amountPaid" class="form-control" [(ngModel)]="payment.amountPaid" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Pay Date:</label>
+            <input type="date" name="payDate" class="form-control" [(ngModel)]="payment.payDate" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Payment Mode:</label>
+            <select name="paymentMode" class="form-control" [(ngModel)]="payment.paymentMode">
+              <option>Bank Transfer</option>
+              <option>Cheque</option>
+              <option>Cash</option>
+            </select>            
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Payment Ref:</label>
+            <input type="text" name="paymentRef" class="form-control" [(ngModel)]="payment.paymentRef" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><span style="font-size: 1.5rem;">৳</span> Pay</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Payment</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Payment Code</th>
+          <th>Supplier Code</th>
+          <th>Supplier Name</th>
+          <th>Purchase Order Code</th>
+          <th>Amount Paid</th>
+          <th>Pay Date</th>
+          <th>Payment Mode</th>
+          <th>Payment Ref</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let p of payments">
+          <td>{{ p.paymentCode }}</td>
+          <td>{{ p.supplierCode }}</td>
+          <td>{{ p.supplierName }}</td>
+          <td>{{ p.purchaseOrderCode }}</td>
+          <td>{{ p.amountPaid }}</td>
+          <td>{{ p.payDate | date }}</td>
+          <td>{{ p.paymentMode }}</td>
+          <td>{{ p.paymentRef }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(p)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(p)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Payment</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #paymentEditForm="ngForm" (ngSubmit)="update(updatePayment)">
+          <input type="hidden" name="id" [(ngModel)]="updatePayment.id" />
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Payment Code:</label>
+              <input type="number" name="paymentCode" class="form-control" [(ngModel)]="updatePayment.paymentCode" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Supplier:</label>
+              <select name="updateSupplier" class="form-control" (change)="onUpdateSupplierSelect($event)">
+                <option value="">-- Select Supplier --</option>
+                <option *ngFor="let supp of suppliers" [value]="supp.supplierCode" [selected]="supp.supplierCode === updatePayment.supplierCode">{{supp.supplierName}} ({{supp.supplierCode}})</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Purchase Order:</label>
+              <select name="updatePurchaseOrder" class="form-control" (change)="onUpdatePurchaseOrderSelect($event)" [disabled]="!filteredPurchaseOrders.length">
+                <option value="">-- Select Purchase Order --</option>
+                <option *ngFor="let po of filteredPurchaseOrders" [value]="po.purchaseOrderCode" [selected]="po.purchaseOrderCode === updatePayment.purchaseOrderCode">PO# {{po.purchaseOrderCode}} (Amount: {{po.totalAmount}})</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Supplier Code:</label>
+              <input type="number" name="supplierCode" class="form-control" [(ngModel)]="updatePayment.supplierCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Supplier Name:</label>
+              <input type="text" name="supplierName" class="form-control" [(ngModel)]="updatePayment.supplierName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Purchase Order Code:</label>
+              <input type="number" name="purchaseOrderCode" class="form-control" [(ngModel)]="updatePayment.purchaseOrderCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Amount Paid:</label>
+              <input type="number" name="amountPaid" class="form-control" [(ngModel)]="updatePayment.amountPaid" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Pay Date:</label>
+              <input type="date" name="payDate" class="form-control" [(ngModel)]="updatePayment.payDate" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Payment Mode:</label>
+              <select name="paymentMode" class="form-control" [(ngModel)]="updatePayment.paymentMode">
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+                <option>Cash</option>
+              </select>              
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Payment Ref:</label>
+              <input type="text" name="paymentRef" class="form-control" [(ngModel)]="updatePayment.paymentRef" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

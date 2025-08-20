@@ -1,0 +1,63 @@
+<div class="container-fluid mt-4">
+  <!-- Search Section -->
+  <div class="mt-5 mb-3">
+    <h2 class="mb-4 text-center text-primary">Payroll Report Summary</h2>
+    <input type="text" class="form-control" placeholder="Search by Employee Name, Code, Designation, Month, Year" [(ngModel)]="searchTerm" (input)="filter()" />
+  </div>
+
+  <!-- Filtered Payroll Report -->
+  <table class="table table-bordered table-hover table-striped text-center align-middle shadow">
+    <thead class="table-success">
+      <tr>
+        <th>Month</th>
+        <th>Year</th>
+        <th>Employee Code</th>
+        <th>Employee Name</th>
+        <th>Designation</th>
+        <th>Gross Salary</th>
+        <th>Deductions</th>
+        <th>Net Salary</th>
+        <th>Pay Date</th>
+        <th>Payment Mode</th>
+        <!-- <th>Payment Ref</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let sal of filteredSalaries">
+        <td>{{ sal.month }}</td>
+        <td>{{ sal.year }}</td>
+        <td>{{ sal.employeeCode }}</td>
+        <td>{{ sal.employeeName }}</td>
+        <td>{{ sal.designationName }}</td>
+        <td>{{ sal.grossSalary | currency:'BDT ' }}</td>
+        <td>{{ sal.deductions | currency:'BDT ' }}</td>
+        <td>{{ sal.netSalary | currency:'BDT ' }}</td>
+        <td>{{ sal.payDate | date }}</td>
+        <td>{{ sal.paymentMode }}</td>
+        <!-- <td>{{ sal.paymentRef }}</td> -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Totals Summary Section -->
+<div class="mt-5 mb-3">
+  <h4 class="text-success text-center">Total Summary for Searched Records</h4>
+</div>
+
+<table class="table table-bordered table-hover table-striped text-center align-middle shadow">
+  <thead class="table-primary">
+    <tr>
+      <th>Total Gross Salary</th>
+      <th>Total Deductions</th>
+      <th>Total Net Salary</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>{{ totalGrossSalary | currency:'BDT ' }}</strong></td>
+      <td><strong>{{ totalDeductions | currency:'BDT ' }}</strong></td>
+      <td><strong>{{ totalNetSalary | currency:'BDT ' }}</strong></td>
+    </tr>
+  </tbody>
+</table>

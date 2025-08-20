@@ -1,0 +1,93 @@
+.dashboard-container {
+  padding: 20px;
+}
+
+.welcome-card {
+  border: none;
+  border-radius: 10px;
+}
+
+.highlight-name {
+  color: #333;
+  background-color: #FFF9C4;
+  padding: 0 5px;
+  border-radius: 3px;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+  font-weight: 600;
+}
+
+.welcome-message {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.profile-card {
+  border-radius: 10px;
+  border: none;
+}
+
+.profile-card .card-header {
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.profile-detail {
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-detail:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.profile-detail label {
+  font-weight: 600;
+  color: #495057;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.profile-detail p {
+  margin: 0;
+  color: #212529;
+  font-size: 1.1rem;
+}
+
+.stat-card {
+  border-radius: 10px;
+  border: none;
+  transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(45deg, #4e73df, #224abe);
+}
+
+.bg-gradient-info {
+  background: linear-gradient(45deg, #36b9cc, #258391);
+}
+
+.bg-gradient-success {
+  background: linear-gradient(45deg, #1cc88a, #13855c);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .welcome-card h1 {
+    font-size: 1.8rem;
+  }
+  
+  .profile-detail label {
+    font-size: 0.9rem;
+  }
+  
+  .profile-detail p {
+    font-size: 1rem;
+  }
+}

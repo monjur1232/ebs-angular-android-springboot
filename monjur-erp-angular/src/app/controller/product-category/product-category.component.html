@@ -1,0 +1,89 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header text-white" style="background-color: #d702b4;">
+      <h2 class="mb-0">Add a New Product Category</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #catForm="ngForm" (ngSubmit)="save(productCategory)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Category Code:</label>
+            <input type="number" name="productCategoryCode" class="form-control" [(ngModel)]="productCategory.productCategoryCode" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Category Name:</label>
+            <input type="text" name="name" class="form-control" [(ngModel)]="productCategory.productCategoryName" required />
+          </div>
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Description:</label>
+            <textarea name="description" class="form-control" [(ngModel)]="productCategory.description"></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Product Category</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Product Category Code</th>
+          <th>Product Category Name</th>
+          <th>Description</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cat of productCategories">
+          <td>{{ cat.productCategoryCode }}</td>
+          <td>{{ cat.productCategoryName }}</td>
+          <td>{{ cat.description }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(cat)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(cat)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Product Category</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #catEditForm="ngForm" (ngSubmit)="update(updateProductCategory)">
+          <input type="hidden" name="id" [(ngModel)]="updateProductCategory.id" />
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Category Code:</label>
+              <input type="number" name="productCategoryCode" class="form-control" [(ngModel)]="updateProductCategory.productCategoryCode" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Category Name:</label>
+              <input type="text" name="name" class="form-control" [(ngModel)]="updateProductCategory.productCategoryName" required />
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Description:</label>
+              <textarea name="description" class="form-control" [(ngModel)]="updateProductCategory.description"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

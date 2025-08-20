@@ -1,0 +1,133 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-success text-white">
+      <h2 class="mb-0">Add a New Registration</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #regForm="ngForm" (ngSubmit)="save(registration)">
+        <!-- <div class="mb-3">
+          <label class="form-label">Registration Code:</label>
+          <input type="number" name="registrationCode" class="form-control"
+                 [(ngModel)]="registration.registrationCode" required>
+        </div> -->
+          <div class="mb-3">
+            <label class="form-label">Select Employee:</label>
+            <select name="employee" class="form-control" (change)="onEmployeeSelect($event)" required>
+              <option value="">-- Select Employee --</option>
+              <option *ngFor="let emp of employees" [value]="emp.employeeCode" [selected]="emp.employeeCode === registration.employeeCode">{{emp.firstName}} {{emp.lastName}} ({{emp.employeeCode}})</option>
+            </select>
+          </div>        
+        <div class="mb-3">
+          <label class="form-label">Employee Code:</label>
+          <input type="number" name="employeeCode" class="form-control"
+                 [(ngModel)]="registration.employeeCode" readonly>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Employee Name:</label>
+          <input type="text" name="employeeName" class="form-control"
+                 [(ngModel)]="registration.employeeName" readonly>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Email:</label>
+          <input type="text" name="registrationEmail" class="form-control"
+                 [(ngModel)]="registration.email" required>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Password:</label>
+          <input type="text" name="registrationPassword" class="form-control"
+                 [(ngModel)]="registration.password" required>
+        </div>
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-save"></i> Save
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Registration</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <!-- <th>Code</th> -->
+          <th>Employee Code</th>
+          <th>Employee Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let reg of registrations">
+          <!-- <td>{{ reg.registrationCode }}</td> -->
+          <td>{{ reg.employeeCode }}</td>
+          <td>{{ reg.employeeName }}</td>
+          <td>{{ reg.email }}</td>
+          <td>{{ reg.password }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(reg)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(reg)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h4 class="mb-0">Update Registration</h4>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #regEditForm="ngForm" (ngSubmit)="update(updateRegistration)">
+          <input type="hidden" name="id" [(ngModel)]="updateRegistration.id" />
+          <!-- <div class="mb-3">
+            <label class="form-label">Registration Code:</label>
+            <input type="number" name="registrationCode" class="form-control"
+                   [(ngModel)]="updateRegistration.registrationCode" required>
+          </div> -->
+          <div class="mb-3">
+            <label class="form-label">Select Employee:</label>
+            <select name="updateEmployee" class="form-control" (change)="onUpdateEmployeeSelect($event)" required>
+              <option value="">-- Select Employee --</option>
+              <option *ngFor="let emp of employees" [value]="emp.employeeCode" [selected]="emp.employeeCode === updateRegistration.employeeCode">
+                {{emp.firstName}} {{emp.lastName}} ({{emp.employeeCode}})
+              </option>
+            </select>
+          </div>          
+          <div class="mb-3">
+            <label class="form-label">Employee Code:</label>
+            <input type="number" name="employeeCode" class="form-control"
+                   [(ngModel)]="updateRegistration.employeeCode" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Employee Name:</label>
+            <input type="text" name="employeeName" class="form-control"
+                   [(ngModel)]="updateRegistration.employeeName" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email:</label>
+            <input type="text" name="registrationEmail" class="form-control"
+                   [(ngModel)]="updateRegistration.email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password:</label>
+            <input type="text" name="registrationPassword" class="form-control"
+                   [(ngModel)]="updateRegistration.password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

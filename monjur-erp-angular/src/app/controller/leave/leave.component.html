@@ -1,0 +1,182 @@
+<!-- <div *ngIf="leave.employeeName">
+  <h2>Welcome, {{ leave.employeeName }}</h2>
+</div> -->
+
+<div class="container-fluid mt-5">
+  <!-- <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Add New Leave</h2>
+    </div>
+    <div class="card-body">
+      <form (ngSubmit)="saveLeave()">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Leave Code:</label>
+            <input type="number" class="form-control" [(ngModel)]="leave.leaveCode" name="leaveCode" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Employee Code:</label>
+            <input type="number" class="form-control" [(ngModel)]="leave.employeeCode" name="employeeCode" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Employee Name:</label>
+            <input type="text" class="form-control" [(ngModel)]="leave.employeeName" name="employeeName" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Leave Type:</label>
+            <select class="form-control" [(ngModel)]="leave.leaveType" name="leaveType" required>
+              <option>Casual</option>
+              <option>Sick</option>
+              <option>Paid</option>
+              <option>Unpaid</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Start Date:</label>
+            <input type="date" class="form-control" [(ngModel)]="leave.startDate" name="startDate" required>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">End Date:</label>
+            <input type="date" class="form-control" [(ngModel)]="leave.endDate" name="endDate" required>
+          </div>
+          <div class="col-md-12 mb-3">
+            <label class="form-label">Reason:</label>
+            <textarea class="form-control" [(ngModel)]="leave.reason" name="reason"></textarea>
+          </div>
+          <div class="col-12">
+            <button type="submit" class="btn btn-success">Submit Leave</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div> -->
+
+  <div class="mt-5">
+    <div class="btn-group mb-3">
+      <button (click)="getAllLeaves()" class="btn btn-outline-primary">All Leaves</button>
+      <button (click)="getLeavesByStatus(0)" class="btn btn-outline-warning" style="color: #c0930e;">Pending</button>
+      <button (click)="getLeavesByStatus(1)" class="btn btn-outline-success">Approved</button>
+      <button (click)="getLeavesByStatus(2)" class="btn btn-outline-danger">Rejected</button>
+    </div>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <!-- <th>Leave Code</th> -->
+          <th>Employee Code</th>
+          <th>Employee Name</th>
+          <th>Leave Type</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Reason</th>
+          <th>Leave Proposal</th>
+          <th>Status</th>
+          <th>Approve</th>
+          <th>Reject</th>
+          <!-- <th>Actions</th> -->
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let lv of leaves">
+          <!-- <td>{{ lv.leaveCode }}</td> -->
+          <td>{{ lv.employeeCode }}</td>
+          <td>{{ lv.employeeName }}</td>
+          <td>{{ lv.leaveType }}</td>
+          <td>{{ lv.startDate | date }}</td>
+          <td>{{ lv.endDate | date }}</td>
+          <td>{{ lv.reason }}</td>
+          <td>{{ lv.leaveProposal }}</td>
+          <td>
+            <span *ngIf="lv.status === 0" class="badge bg-warning text-dark ms-2">Pending</span>
+            <span *ngIf="lv.status === 1" class="badge bg-success">Approved</span>
+            <span *ngIf="lv.status === 2" class="badge bg-danger">Rejected</span> &nbsp;
+          </td>
+          <td>
+            <button *ngIf="lv.status === 0" (click)="approveLeave(lv.id!)" class="btn btn-success btn-sm">
+              Approve
+            </button>
+          </td>
+          <td>
+            <button *ngIf="lv.status === 0" (click)="rejectLeave(lv.id!)" class="btn btn-danger btn-sm">
+              Reject
+            </button>
+          </td>            
+
+          <!-- <td>
+            <button *ngIf="lv.status === 0" (click)="approveLeave(lv.id!)" class="btn btn-success btn-sm me-1">
+              Approve
+            </button>
+            <button *ngIf="lv.status === 0" (click)="rejectLeave(lv.id!)" class="btn btn-danger btn-sm me-1">
+              Reject
+            </button>
+            <button (click)="editLeave(lv)" class="btn btn-primary btn-sm me-1">
+              Edit
+            </button>
+            <button (click)="deleteLeave(lv.id!)" class="btn btn-danger btn-sm">
+              Delete
+            </button>
+          </td> -->
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Leave</h2>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="updateLeaveM()">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Leave Code:</label>
+              <input type="number" class="form-control" [(ngModel)]="updateLeave.leaveCode" name="updateLeaveCode" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Employee Code:</label>
+              <input type="number" class="form-control" [(ngModel)]="updateLeave.employeeCode" name="updateEmployeeCode" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Employee Name:</label>
+              <input type="text" class="form-control" [(ngModel)]="updateLeave.employeeName" name="updateEmployeeName" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Leave Type:</label>
+              <select class="form-control" [(ngModel)]="updateLeave.leaveType" name="updateLeaveType" required>
+                <option>Casual</option>
+                <option>Sick</option>
+                <option>Paid</option>
+                <option>Unpaid</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Start Date:</label>
+              <input type="date" class="form-control" [(ngModel)]="updateLeave.startDate" name="updateStartDate" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">End Date:</label>
+              <input type="date" class="form-control" [(ngModel)]="updateLeave.endDate" name="updateEndDate" required>
+            </div>
+            <div class="col-md-12 mb-3">
+              <label class="form-label">Reason:</label>
+              <textarea class="form-control" [(ngModel)]="updateLeave.reason" name="updateReason"></textarea>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status:</label>
+              <select class="form-control" [(ngModel)]="updateLeave.status" name="updateStatus">
+                <option [value]="0">Pending</option>
+                <option [value]="1">Approved</option>
+                <option [value]="2">Rejected</option>
+              </select>
+            </div>
+            <div class="col-12">
+              <button type="submit" class="btn btn-primary me-2">Update</button>
+              <button type="button" (click)="divStatus = false" class="btn btn-secondary">Cancel</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

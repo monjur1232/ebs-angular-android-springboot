@@ -1,0 +1,58 @@
+<div class="clock-calendar-container">
+  <div class="time-section">
+    <div class="digital-clock">
+      <div class="time">{{ currentTime | date:'HH:mm:ss' }}</div>
+      <div class="date">{{ currentTime | date:'EEEE, MMMM d, y' }}</div>
+    </div>
+    
+    <div class="analog-clock">
+      <div class="clock-face">
+        <div class="marker" *ngFor="let marker of markers" [style.transform]="'rotate(' + (marker * 30) + 'deg)'"></div>
+        <div class="hand hour-hand" [style.transform]="'rotate(' + hourRotation + 'deg)'"></div>
+        <div class="hand minute-hand" [style.transform]="'rotate(' + minuteRotation + 'deg)'"></div>
+        <div class="hand second-hand" [style.transform]="'rotate(' + secondRotation + 'deg)'"></div>
+        <div class="center-circle"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="calendar-section">
+    <div class="calendar-header">
+      <button class="nav-button" (click)="previousMonth()">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <h2 class="month-year">{{ currentMonth | date:'MMMM y' }}</h2>
+      <button class="nav-button" (click)="nextMonth()">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+    
+    <div class="weekdays">
+      <div class="weekday" *ngFor="let day of weekDays">{{ day }}</div>
+    </div>
+    
+    <div class="days-grid">
+      <div class="day empty" *ngFor="let emptyDay of emptyDays"></div>
+      <div class="day" 
+           *ngFor="let day of daysInMonth" 
+           [class.today]="isToday(day)"
+           [class.selected]="isSelected(day)"
+           (click)="selectDay(day)">
+        {{ day }}
+      </div>
+    </div>
+  </div>
+  
+  <div class="events-section" *ngIf="events.length > 0">
+    <h3 class="events-title">Today's Events</h3>
+    <div class="event-list">
+      <div class="event" *ngFor="let event of todaysEvents">
+        <div class="event-time">{{ event.time }}</div>
+        <div class="event-details">
+          <div class="event-title">{{ event.title }}</div>
+          <div class="event-location">{{ event.location }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

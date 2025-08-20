@@ -1,0 +1,181 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Add a New Sales Return</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #srForm="ngForm" (ngSubmit)="save(salesReturn)">
+        <div class="row">
+          <!-- <div class="col-md-6 mb-3">
+            <label class="form-label">Sales Return Code:</label>
+            <input type="number" name="salesReturnCode" class="form-control" [(ngModel)]="salesReturn.salesReturnCode" required />
+          </div> -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Select Sales Order:</label>
+            <select name="salesOrder" class="form-control" (change)="onSalesOrderSelect($event)">
+              <option value="">-- Select Sales Order --</option>
+              <option *ngFor="let so of salesOrders" [value]="so.salesOrderCode" [selected]="so.salesOrderCode === salesReturn.salesOrderCode">SO# {{so.salesOrderCode}} (Customer: {{so.customerName}}, Product: {{so.productName}}, Quantity: {{so.salesQuantity}})</option>
+            </select>
+          </div>          
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Sales Order Code:</label>
+            <input type="number" name="salesOrderCode" class="form-control" [(ngModel)]="salesReturn.salesOrderCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Customer Code:</label>
+            <input type="number" name="customerCode" class="form-control" [(ngModel)]="salesReturn.customerCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Customer Name:</label>
+            <input type="text" name="customerName" class="form-control" [(ngModel)]="salesReturn.customerName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Code:</label>
+            <input type="number" name="productCode" class="form-control" [(ngModel)]="salesReturn.productCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Name:</label>
+            <input type="text" name="productName" class="form-control" [(ngModel)]="salesReturn.productName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Sales Quantity:</label>
+            <input type="number" name="salesQuantity" class="form-control" [(ngModel)]="salesReturn.salesQuantity" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Return Quantity:</label>
+            <input type="number" name="returnQuantity" class="form-control" [(ngModel)]="salesReturn.returnQuantity" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Return Date:</label>
+            <input type="date" name="returnDate" class="form-control" [(ngModel)]="salesReturn.returnDate" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Reason:</label>
+            <select name="reason" class="form-control" [(ngModel)]="salesReturn.reason" required>
+              <option>Defective</option>
+              <option>Wrong Item</option>
+              <option>Excess Quantity</option>
+            </select>               
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Sales Return</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <!-- <th>Sales Return Code</th> -->
+          <th>Sales Order Code</th>
+          <th>Customer Code</th>
+          <th>Customer Name</th>
+          <th>Product Code</th>
+          <th>Product Name</th>
+          <th>Sales Quantity</th>
+          <th>Return Quantity</th>
+          <th>Return Date</th>
+          <th>Reason</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sr of salesReturns">
+          <!-- <td>{{ sr.salesReturnCode }}</td> -->
+          <td>{{ sr.salesOrderCode }}</td>
+          <td>{{ sr.customerCode }}</td>
+          <td>{{ sr.customerName }}</td>
+          <td>{{ sr.productCode }}</td>
+          <td>{{ sr.productName }}</td>
+          <td>{{ sr.salesQuantity }}</td>
+          <td>{{ sr.returnQuantity }}</td>
+          <td>{{ sr.returnDate | date }}</td>
+          <td>{{ sr.reason }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(sr)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(sr)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Sales Return</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #editForm="ngForm" (ngSubmit)="update(updateSalesReturn)">
+          <input type="hidden" name="id" [(ngModel)]="updateSalesReturn.id" />
+          <div class="row">
+            <!-- <div class="col-md-6 mb-3">
+              <label class="form-label">Sales Return Code:</label>
+              <input type="number" name="salesReturnCode" class="form-control" [(ngModel)]="updateSalesReturn.salesReturnCode" required />
+            </div> -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Sales Order:</label>
+              <select name="updateSalesOrder" class="form-control" (change)="onUpdateSalesOrderSelect($event)">
+                <option value="">-- Select Sales Order --</option>
+                <option *ngFor="let so of salesOrders" [value]="so.salesOrderCode" [selected]="so.salesOrderCode === updateSalesReturn.salesOrderCode">SO# {{so.salesOrderCode}} (Customer: {{so.customerName}}, Product: {{so.productName}}, Quantity: {{so.salesQuantity}})</option>
+              </select>
+            </div>            
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Sales Order Code:</label>
+              <input type="number" name="salesOrderCode" class="form-control" [(ngModel)]="updateSalesReturn.salesOrderCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Customer Code:</label>
+              <input type="number" name="customerCode" class="form-control" [(ngModel)]="updateSalesReturn.customerCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Customer Name:</label>
+              <input type="text" name="customerName" class="form-control" [(ngModel)]="updateSalesReturn.customerName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Code:</label>
+              <input type="number" name="productCode" class="form-control" [(ngModel)]="updateSalesReturn.productCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Name:</label>
+              <input type="text" name="productName" class="form-control" [(ngModel)]="updateSalesReturn.productName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Sales Quantity:</label>
+              <input type="number" name="salesQuantity" class="form-control" [(ngModel)]="updateSalesReturn.salesQuantity" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Return Quantity:</label>
+              <input type="number" name="returnQuantity" class="form-control" [(ngModel)]="updateSalesReturn.returnQuantity" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Return Date:</label>
+              <input type="date" name="returnDate" class="form-control" [(ngModel)]="updateSalesReturn.returnDate" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Reason:</label>
+              <select name="reason" class="form-control" [(ngModel)]="updateSalesReturn.reason" required>
+                <option>Defective</option>
+                <option>Wrong Item</option>
+                <option>Excess Quantity</option>
+              </select>               
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

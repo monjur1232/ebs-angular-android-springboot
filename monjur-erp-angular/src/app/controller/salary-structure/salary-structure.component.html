@@ -1,0 +1,163 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-success text-white">
+      <h2 class="mb-0">Add New Salary Structure</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #salForm="ngForm" (ngSubmit)="save(salaryStructure)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Salary Structure Code:</label>
+            <input type="number" name="salaryStructureCode" class="form-control" [(ngModel)]="salaryStructure.salaryStructureCode" required />
+          </div>
+          <div class="col-md-6 mb-3">
+          <label class="form-label">Select Designation:</label>
+          <select name="designation" class="form-control" (change)="onDesignationSelect($event)" required>
+            <option value="">-- Select Designation --</option>
+            <option *ngFor="let desg of designations" [value]="desg.designationCode" [selected]="desg.designationCode === salaryStructure.designationCode">{{desg.designationName}} ({{desg.designationCode}})</option>
+          </select>
+          </div>          
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Designation Code:</label>
+            <input type="number" name="designationCode" class="form-control" [(ngModel)]="salaryStructure.designationCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Designation Name:</label>
+            <input type="text" name="designationName" class="form-control" [(ngModel)]="salaryStructure.designationName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Basic Salary:</label>
+            <input type="number" name="basicSalary" class="form-control" [(ngModel)]="salaryStructure.basicSalary" (input)="calculateSalaryFields()" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">House Rent (50% of Basic):</label>
+            <input type="number" name="houseRent" class="form-control" [(ngModel)]="salaryStructure.houseRent" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Medical Allowance (10% of Basic):</label>
+            <input type="number" name="medicalAllowance" class="form-control" [(ngModel)]="salaryStructure.medicalAllowance" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Transport Allowance (15% of Basic):</label>
+            <input type="number" name="transportAllowance" class="form-control" [(ngModel)]="salaryStructure.transportAllowance" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Others:</label>
+            <input type="number" name="others" class="form-control" [(ngModel)]="salaryStructure.others" (input)="calculateGrossSalary()" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Gross Salary:</label>
+            <input type="number" name="grossSalary" class="form-control" [(ngModel)]="salaryStructure.grossSalary" readonly />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete Salary Structure</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Salary Structure Code</th>
+          <th>Designation Code</th>
+          <th>Designation Name</th>
+          <th>Basic Salary</th>
+          <th>House Rent (50%)</th>
+          <th>Medical (10%)</th>
+          <th>Transport (15%)</th>
+          <th>Others</th>
+          <th>Gross</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let salst of salaryStructures">
+          <td>{{ salst.salaryStructureCode }}</td>
+          <td>{{ salst.designationCode }}</td>
+          <td>{{ salst.designationName }}</td>
+          <td>{{ salst.basicSalary }}</td>
+          <td>{{ salst.houseRent }}</td>
+          <td>{{ salst.medicalAllowance }}</td>
+          <td>{{ salst.transportAllowance }}</td>
+          <td>{{ salst.others }}</td>
+          <td>{{ salst.grossSalary }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(salst)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(salst)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Salary Structure</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #salEditForm="ngForm" (ngSubmit)="update(updateSalaryStructure)">
+          <input type="hidden" name="id" [(ngModel)]="updateSalaryStructure.id" />
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Salary Structure Code:</label>
+              <input type="number" name="salaryStructureCode" class="form-control" [(ngModel)]="updateSalaryStructure.salaryStructureCode" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Designation:</label>
+              <select name="updateDesignation" class="form-control" (change)="onUpdateDesignationSelect($event)" required>
+                <option value="">-- Select Designation --</option>
+                <option *ngFor="let desg of designations" [value]="desg.designationCode" [selected]="desg.designationCode === updateSalaryStructure.designationCode">{{desg.designationName}} ({{desg.designationCode}})</option>
+              </select>
+            </div>            
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Designation Code:</label>
+              <input type="number" name="designationCode" class="form-control" [(ngModel)]="updateSalaryStructure.designationCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Designation Name:</label>
+              <input type="text" name="designationName" class="form-control" [(ngModel)]="updateSalaryStructure.designationName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Basic Salary:</label>
+              <input type="number" name="basicSalary" class="form-control" [(ngModel)]="updateSalaryStructure.basicSalary" (input)="calculateUpdateSalaryFields()" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">House Rent (50% of Basic):</label>
+              <input type="number" name="houseRent" class="form-control" [(ngModel)]="updateSalaryStructure.houseRent" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Medical Allowance (10% of Basic):</label>
+              <input type="number" name="medicalAllowance" class="form-control" [(ngModel)]="updateSalaryStructure.medicalAllowance" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Transport Allowance (15% of Basic):</label>
+              <input type="number" name="transportAllowance" class="form-control" [(ngModel)]="updateSalaryStructure.transportAllowance" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Others:</label>
+              <input type="number" name="others" class="form-control" [(ngModel)]="updateSalaryStructure.others" (input)="calculateUpdateGrossSalary()" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Gross Salary:</label>
+              <input type="number" name="grossSalary" class="form-control" [(ngModel)]="updateSalaryStructure.grossSalary" readonly />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

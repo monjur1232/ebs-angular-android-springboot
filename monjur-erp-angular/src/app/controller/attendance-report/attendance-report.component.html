@@ -1,0 +1,102 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg mb-4">
+    <div class="card-header bg-success text-white">
+      <h2 class="mb-0">Attendance Summary (All Records)</h2>
+    </div>
+    <div class="card-body">
+      <div *ngIf="employeeSummaries.length > 0">
+        <h5 class="text-primary mb-3">
+          Total Employees with Attendance: {{ employeeSummaries.length }}
+        </h5>
+
+        <table class="table table-bordered table-striped text-center align-middle shadow-sm">
+          <thead class="table-dark">
+            <tr>
+              <th>Employee Code</th>
+              <th>Employee Name</th>
+              <th>Total Days</th>
+              <th>Present</th>
+              <th>Late</th>
+              <th>Absent</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let summary of employeeSummaries">
+              <td>{{ summary.employeeCode }}</td>
+              <td>{{ summary.employeeName }}</td>
+              <td>{{ summary.totalDays }}</td>
+              <td><span class="badge bg-success">{{ summary.presentDays }}</span></td>
+              <td><span class="badge bg-warning text-dark">{{ summary.lateDays }}</span></td>
+              <td><span class="badge bg-danger">{{ summary.absentDays }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Search Section -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-header bg-info text-white">
+      <h5 class="mb-0">Search Attendance Records</h5>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-5">
+          <input type="text" class="form-control" placeholder="Search by Employee Name" [(ngModel)]="searchName">
+        </div>
+        <div class="col-md-4">
+          <input type="date" class="form-control" [(ngModel)]="searchDate">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-primary w-100" (click)="searchReport()">
+            <i class="bi bi-search"></i> Search
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Filtered Report -->
+  <div class="card shadow-lg" *ngIf="filteredAttendances.length > 0">
+    <div class="card-header bg-secondary text-white">
+      <h5 class="mb-0">Filtered Attendance Report</h5>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-striped text-center align-middle shadow-sm">
+        <thead class="table-primary">
+          <tr>
+            <th>Employee Code</th>
+            <th>Employee Name</th>
+            <th>Date</th>
+            <th>In Time</th>
+            <th>Out Time</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let att of filteredAttendances">
+            <td>{{ att.employeeCode }}</td>
+            <td>{{ att.employeeName }}</td>
+            <td>{{ att.date | date }}</td>
+            <td>{{ att.inTime }}</td>
+            <td>{{ att.outTime }}</td>
+            <td>
+              <span [ngClass]="{
+                'badge bg-success text-white': att.status === 'Present',
+                'badge bg-warning text-dark': att.status === 'Late',
+                'badge bg-danger': att.status === 'Absent'
+              }">
+                {{ att.status }}
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div *ngIf="filteredAttendances.length === 0 && (searchName || searchDate)" class="text-center text-muted mt-3">
+    <p><i class="bi bi-info-circle"></i> No records found for the given search.</p>
+  </div>
+</div>

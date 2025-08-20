@@ -1,0 +1,8 @@
+input.form-control {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}

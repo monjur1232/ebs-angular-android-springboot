@@ -1,0 +1,147 @@
+/* Reset & Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Top Navbar */
+.top-navbar {
+  height: 75px;
+  background-color: #eed8e8;
+  color: darkblue;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+  border-bottom: 1px solid #ccc;
+}
+
+.top-navbar .brand {
+  display: flex;
+  align-items: center; /* Vertically center */
+  height: 100%; /* Fill the navbar height */
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.top-navbar .brand img {
+  vertical-align: middle;
+  margin-right: 10px;
+}
+
+.top-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.search-input {
+  width: 60%;
+  padding: 8px 35px 8px 15px;
+  border-radius: 20px;
+  border: 1px solid #aaa;
+  font-size: 16px;
+}
+
+.search-icon {
+  position: absolute;
+  right: 23%;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+}
+
+.top-navbar .top-links a {
+  margin-left: 15px;
+  text-decoration: none;
+  color: black;
+  font-size: 20px;
+}
+
+.top-navbar .top-links a:hover {
+  color: blue;
+}
+
+/* Layout Structure */
+.main-container {
+  display: flex;
+  height: calc(100vh - 50px);
+}
+
+/* Sidebar */
+.sidebar {
+  width: 310px;
+  background-color: #f0f5f5;
+  padding: 20px;
+  border-right: 1px solid #ccc;
+}
+
+.sidebar .logo {
+  font-size: 20px;
+  font-weight: bold;
+  color: #003366;
+  margin-bottom: 20px;
+}
+
+.nav-links {
+  list-style: none;
+  padding-left: 0;
+}
+
+.nav-links li {
+  margin-bottom: 10px;
+}
+
+.nav-links a {
+  display: block;
+  text-decoration: none;
+  color: #003366;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  background-color: #d3edff;
+  font-weight: bold;
+}
+
+/* Submenu */
+.has-submenu > a::after {
+  content: " ▼";
+  font-size: 10px;
+  float: right;
+}
+
+.submenu {
+  display: none;
+  list-style: none;
+  padding-left: 15px;
+  margin-top: 5px;
+}
+
+.submenu.show {
+  display: block;
+}
+
+.submenu li a {
+  background-color: #e6f5ff;
+  font-size: 14px;
+  margin-top: 5px;
+}
+
+.submenu li a:hover {
+  background-color: #cceaff;
+}
+
+/* Main Content Area */
+.content-area {
+  flex: 1;
+  padding: 20px;
+  background-color: #fefefe;
+  overflow-y: auto;
+}

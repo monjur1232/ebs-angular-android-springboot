@@ -1,0 +1,125 @@
+<!-- <div>
+    <h1>Welcome, {{employeeName}}</h1>
+</div> -->
+
+<div class="container-fluid dashboard-container">
+  <!-- Welcome Card with Highlighted Name -->
+  <div class="card welcome-card shadow-lg mb-4">
+    <div class="card-header bg-primary text-white">
+      <h1 class="mb-0">Welcome, <span class="highlight-name">{{employeeName}}</span></h1>
+    </div>
+    <div class="card-body">
+      <p class="welcome-message">Here's your complete employee profile information</p>
+    </div>
+  </div>
+
+  <!-- Employee Profile Section -->
+  <div class="row">
+    <!-- Personal Information Card -->
+    <div class="col-md-6 mb-4">
+      <div class="card profile-card shadow-sm h-100">
+        <div class="card-header bg-info text-white">
+          <h3 class="mb-0"><i class="bi bi-person-badge"></i> Personal Information</h3>
+        </div>
+        <div class="card-body">
+          <!-- <div class="profile-detail">
+            <label>Employee Code:</label>
+            <p>{{currentEmployee?.employeeCode}}</p>
+          </div> -->
+          <div class="profile-detail">
+            <label>Full Name:</label>
+            <p>{{currentEmployee?.firstName}} {{currentEmployee?.lastName}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Gender:</label>
+            <p>{{currentEmployee?.gender}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Date of Birth:</label>
+            <p>{{currentEmployee?.dateOfBirth | date:'mediumDate'}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Phone:</label>
+            <p>{{currentEmployee?.phone}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Email:</label>
+            <p>{{currentEmployee?.email}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Address:</label>
+            <p>{{currentEmployee?.address}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Professional Information Card -->
+    <div class="col-md-6 mb-4">
+      <div class="card profile-card shadow-sm h-100">
+        <div class="card-header bg-success text-white">
+          <h3 class="mb-0"><i class="bi bi-briefcase"></i> Professional Information</h3>
+        </div>
+        <div class="card-body">
+          <div class="profile-detail">
+            <label>Hire Date:</label>
+            <p>{{currentEmployee?.hireDate | date:'mediumDate'}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Department Code:</label>
+            <p>{{currentEmployee?.departmentCode}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Department Name:</label>
+            <p>{{currentEmployee?.departmentName}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Designation Code:</label>
+            <p>{{currentEmployee?.designationCode}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Designation Name:</label>
+            <p>{{currentEmployee?.designationName}}</p>
+          </div>
+          <div class="profile-detail">
+            <label>Status:</label>
+            <p [ngClass]="{
+              'text-success': currentEmployee?.status === 'Active',
+              'text-danger': currentEmployee?.status === 'Inactive'
+            }">
+              {{currentEmployee?.status}}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Quick Stats Row -->
+  <div class="row mb-4">
+    <div class="col-md-4 mb-3">
+      <div class="card stat-card shadow-sm bg-gradient-primary text-white">
+        <div class="card-body text-center">
+          <h5><i class="bi bi-calendar-check"></i> Years of Service</h5>
+          <h2>{{getYearsOfService()}}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card stat-card shadow-sm bg-gradient-info text-white">
+        <div class="card-body text-center">
+          <h5><i class="bi bi-building"></i> Department</h5>
+          <h2>{{currentEmployee?.departmentName}}</h2>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-3">
+      <div class="card stat-card shadow-sm bg-gradient-success text-white">
+        <div class="card-body text-center">
+          <h5><i class="bi bi-person-lines-fill"></i> Designation</h5>
+          <h2>{{currentEmployee?.designationName}}</h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

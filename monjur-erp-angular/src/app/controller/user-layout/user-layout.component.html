@@ -1,0 +1,51 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<header class="top-navbar">
+  <div class="brand">
+    <img src="assets/1.png" width="100" height="50" alt="Logo"> &nbsp; Ha-Meem Group &nbsp; &nbsp;
+  </div>
+
+  <div class="top-links">
+    <a href="/leave-request"><i class="fas fa-plane-departure"></i> &nbsp; Leave Request</a> &nbsp;
+    <a href="/user-dashboard"><i class="fas fa-clock"></i> &nbsp; User Dashboard</a>
+  </div>
+
+  <div class="top-center">
+    <input type="text" class="search-input" placeholder="Search..." />
+    <i class="fas fa-search search-icon"></i>
+  </div>
+
+  <div class="top-links">
+    <a href="https://www.hameemgroup.net/contact-us.html"><i class="fas fa-phone"></i> &nbsp; Contact Us</a> &nbsp;
+    <a href="/login"><i class="fas fa-sign-out-alt"></i> &nbsp; Logout</a>
+  </div>
+</header>
+
+<!-- <div class="main-container">
+  <nav class="sidebar">
+    <h2 class="logo"><i class="fas fa-list"></i> &nbsp; ERP System Menu</h2>
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/user-dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+          <i class="fas fa-tachometer-alt"></i> &nbsp; User Dashboard
+        </a>
+      </li>
+
+      <li class="has-submenu">
+        <a href="javascript:void(0)" (click)="toggleSubMenu('leave')" [class.active]="activeMenu === 'leave'"><i class="fas fa-truck"></i> &nbsp; Leave Management</a>
+        <ul class="submenu" [class.show]="activeMenu === 'leave'">
+          <li><a routerLink="/leave-request" routerLinkActive="active"><i class="fas fa-id-badge"></i> &nbsp; Leave Request</a></li>
+        </ul>        
+      </li>
+
+      <li class="has-submenu">
+        <a href="javascript:void(0)" (click)="toggleSubMenu('purchase')" [class.active]="activeMenu === 'purchase'"><i class="fas fa-shopping-basket"></i> &nbsp; Purchase Management</a>
+      </li>      
+    </ul>
+  </nav>
+</div> -->
+
+  <!-- Main Content Area -->
+<div class="content-area">
+  <router-outlet></router-outlet>
+</div>

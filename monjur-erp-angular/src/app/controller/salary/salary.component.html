@@ -1,0 +1,348 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg mb-4">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Process Monthly Payroll</h2>
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Month:</label>
+          <select name="month" class="form-control" [(ngModel)]="selectedMonth">
+            <option *ngFor="let month of months">{{month}}</option>
+          </select>
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Year:</label>
+          <select name="year" class="form-control" [(ngModel)]="selectedYear">
+            <option *ngFor="let year of years">{{year}}</option>
+          </select>
+        </div>
+        <div class="col-md-4 d-flex align-items-end mb-3">
+          <button class="btn btn-danger w-100" (click)="processPayroll()" [disabled]="isProcessing">
+            <i class="bi bi-calculator"></i> {{isProcessing ? 'Processing...' : 'Process Payroll'}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="processedSalaries.length > 0" class="card shadow-lg mb-5">
+    <div class="card-header text-black" style="background-color: #cc44a8;">
+      <h2 class="mb-0"><span class="highlight-name">Payroll Summary for {{selectedMonth}}, {{selectedYear}}</span></h2>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered table-striped text-center align-middle">
+          <thead class="table-danger">
+            <tr>
+              <th>Employee Code</th>
+              <th>Employee Name</th>
+              <th>Designation</th>
+              <th>Basic Salary</th>
+              <th>Gross Salary</th>
+              <th>Absent Days</th>
+              <th>Approved Leave</th>
+              <th>Deductions</th>
+              <th>Net Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let sal of processedSalaries">
+              <td>{{ sal.employeeCode }}</td>
+              <td>{{ sal.employeeName }}</td>
+              <td>{{ sal.designationName }}</td>
+              <td>{{ sal.basicSalary | currency:'BDT ' }}</td>
+              <td>{{ sal.grossSalary | currency:'BDT ' }}</td>
+              <td>{{ sal.totalAbsent }}</td>
+              <td>{{ sal.approvedLeave }}</td>
+              <td>{{ sal.deductions | currency:'BDT ' }}</td>
+              <td class="fw-bold">{{ sal.netSalary | currency:'BDT ' }}</td>
+            </tr>
+            <tr class="table-active fw-bold">
+              <td colspan="3">Total</td>
+              <td>{{ getTotal('basicSalary') | currency:'BDT ' }}</td>
+              <td>{{ getTotal('grossSalary') | currency:'BDT ' }}</td>
+              <td>{{ getTotal('totalAbsent') }}</td>
+              <td>{{ getTotal('approvedLeave') }}</td>
+              <td>{{ getTotal('deductions') | currency:'BDT ' }}</td>
+              <td>{{ getTotal('netSalary') | currency:'BDT ' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="d-grid gap-2 mt-3">
+        <button class="btn btn-success btn-lg" (click)="saveAllSalaries()">
+          <i class="bi bi-save"></i> Save All Salary Records
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="card shadow-lg mb-5">
+    <div class="card-header bg-secondary text-white">
+      <h2 class="mb-0">Add Individual Salary Record</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #salaryForm="ngForm" (ngSubmit)="save(salary)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Month:</label>
+            <select name="month" class="form-control" [(ngModel)]="salary.month">
+              <option *ngFor="let month of months">{{month}}</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Year:</label>
+            <select name="year" class="form-control" [(ngModel)]="salary.year">
+              <option *ngFor="let year of years">{{year}}</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Select Employee:</label>
+            <select name="employee" class="form-control" (change)="onEmployeeSelect($event)" required>
+              <option value="">-- Select Employee --</option>
+              <option *ngFor="let emp of employees" [value]="emp.employeeCode" [selected]="emp.employeeCode === salary.employeeCode">
+                {{emp.firstName}} {{emp.lastName}} ({{emp.employeeCode}})
+              </option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Employee Code:</label>
+            <input type="number" name="employeeCode" class="form-control" [(ngModel)]="salary.employeeCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Employee Name:</label>
+            <input type="text" name="employeeName" class="form-control" [(ngModel)]="salary.employeeName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Designation:</label>
+            <input type="text" name="designationName" class="form-control" [(ngModel)]="salary.designationName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Basic Salary:</label>
+            <input type="number" name="basicSalary" class="form-control" [(ngModel)]="salary.basicSalary" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Gross Salary:</label>
+            <input type="number" name="grossSalary" class="form-control" [(ngModel)]="salary.grossSalary" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Deductions:</label>
+            <input type="number" name="deductions" class="form-control" [(ngModel)]="salary.deductions" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Net Salary:</label>
+            <input type="number" name="netSalary" class="form-control" [(ngModel)]="salary.netSalary" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Pay Date:</label>
+            <input type="date" name="payDate" class="form-control" [(ngModel)]="salary.payDate" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Payment Mode:</label>
+            <select name="paymentMode" class="form-control" [(ngModel)]="salary.paymentMode">
+              <option>Bank Transfer</option>
+              <option>Cheque</option>
+              <option>Cash</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Payment Ref:</label>
+            <input type="text" name="paymentRef" class="form-control" [(ngModel)]="salary.paymentRef" />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><span style="font-size: 1.5rem;">৳</span> Pay</button>
+      </form>
+    </div>
+  </div> -->
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Salary Records</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Month</th>
+          <th>Year</th>
+          <th>Employee Code</th>
+          <th>Employee Name</th>
+          <th>Designation</th>
+          <th>Basic Salary</th>
+          <th>Gross Salary</th>
+          <th>Deductions</th>
+          <th>Net Salary</th>
+          <th>Pay Date</th>
+          <th>Payment Mode</th>
+          <th>Invoice</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sal of salaries">
+          <td>{{ sal.month }}</td>
+          <td>{{ sal.year }}</td>
+          <td>{{ sal.employeeCode }}</td>
+          <td>{{ sal.employeeName }}</td>
+          <td>{{ sal.designationName }}</td>
+          <td>{{ sal.basicSalary | currency:'BDT ' }}</td>
+          <td>{{ sal.grossSalary | currency:'BDT ' }}</td>
+          <td>{{ sal.deductions | currency:'BDT ' }}</td>
+          <td>{{ sal.netSalary | currency:'BDT ' }}</td>
+          <td>{{ sal.payDate | date }}</td>
+          <td>{{ sal.paymentMode }}</td>
+          <td>
+            <button class="btn btn-info btn-sm" (click)="generateInvoice(sal)">
+              <i class="bi bi-receipt"></i> Invoice
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(sal)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(sal)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Salary Record</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #salaryEditForm="ngForm" (ngSubmit)="update(updateSalary)">
+          <input type="hidden" name="id" [(ngModel)]="updateSalary.id" />
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Month:</label>
+              <select name="month" class="form-control" [(ngModel)]="updateSalary.month">
+                <option>January</option>
+                <option>February</option>
+                <option>March</option>
+                <option>April</option>
+                <option>May</option>
+                <option>June</option>
+                <option>July</option>
+                <option>August</option>
+                <option>September</option>
+                <option>October</option>
+                <option>November</option>
+                <option>December</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Year:</label>
+              <select name="year" class="form-control" [(ngModel)]="updateSalary.year">
+                <option>2021</option>
+                <option>2022</option>
+                <option>2023</option>
+                <option>2024</option>
+                <option>2025</option>
+                <option>2026</option>
+                <option>2027</option>
+                <option>2028</option>
+                <option>2029</option>
+                <option>2030</option>
+                <option>2031</option>
+                <option>2032</option>
+                <option>2033</option>
+                <option>2034</option>
+                <option>2035</option>
+              </select>
+            </div>            
+            <!-- <div class="col-md-6 mb-3">
+              <label class="form-label">Salary Code:</label>
+              <input type="number" name="salaryCode" class="form-control" [(ngModel)]="updateSalary.salaryCode" required />
+            </div> -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Employee:</label>
+              <select name="employee" class="form-control" (change)="onEmployeeSelectForUpdate($event)" required>
+                <option value="">-- Select Employee --</option>
+                <option *ngFor="let emp of employees" [value]="emp.employeeCode" [selected]="emp.employeeCode === updateSalary.employeeCode">{{emp.firstName}} {{emp.lastName}} ({{emp.employeeCode}})</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Employee Code:</label>
+              <input type="number" name="employeeCode" class="form-control" [(ngModel)]="updateSalary.employeeCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Employee Name:</label>
+              <input type="text" name="employeeName" class="form-control" [(ngModel)]="updateSalary.employeeName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Designation Code:</label>
+              <input type="number" name="designationCode" class="form-control" [(ngModel)]="updateSalary.designationCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Designation Name:</label>
+              <input type="text" name="designationName" class="form-control" [(ngModel)]="updateSalary.designationName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Salary Structure Code:</label>
+              <input type="number" name="salaryStructureCode" class="form-control" [(ngModel)]="updateSalary.salaryStructureCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Basic Salary:</label>
+              <input type="number" name="basicSalary" class="form-control" [(ngModel)]="updateSalary.basicSalary" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">House Rent:</label>
+              <input type="number" name="houseRent" class="form-control" [(ngModel)]="updateSalary.houseRent" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Medical Allowance:</label>
+              <input type="number" name="medicalAllowance" class="form-control" [(ngModel)]="updateSalary.medicalAllowance" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Transport Allowance:</label>
+              <input type="number" name="transportAllowance" class="form-control" [(ngModel)]="updateSalary.transportAllowance" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Others:</label>
+              <input type="number" name="others" class="form-control" [(ngModel)]="updateSalary.others" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Gross Salary:</label>
+              <input type="number" name="grossSalary" class="form-control" [(ngModel)]="updateSalary.grossSalary" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Deductions:</label>
+              <input type="number" name="deductions" class="form-control" [(ngModel)]="updateSalary.deductions" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Net Salary:</label>
+              <input type="number" name="netSalary" class="form-control" [(ngModel)]="updateSalary.netSalary" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Pay Date:</label>
+              <input type="date" name="payDate" class="form-control" [(ngModel)]="updateSalary.payDate" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Payment Mode:</label>
+              <select name="paymentMode" class="form-control" [(ngModel)]="updateSalary.paymentMode">
+                <option>Bank Transfer</option>
+                <option>Cheque</option>
+                <option>Cash</option>
+              </select>
+            </div>
+            <!-- <div class="col-md-6 mb-3">
+              <label class="form-label">Payment Ref:</label>
+              <input type="text" name="paymentRef" class="form-control" [(ngModel)]="updateSalary.paymentRef" />
+            </div> -->
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

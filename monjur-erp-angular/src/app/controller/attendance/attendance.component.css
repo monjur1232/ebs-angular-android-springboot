@@ -1,0 +1,27 @@
+.btn-group .btn {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid #dee2e6;
+}
+
+.btn-group .btn.active {
+  box-shadow: 0 0 0 0.3rem rgba(13, 110, 253, 1);
+  font-weight: bold;
+}
+
+.btn-group > .btn + .btn {
+  margin-left: 1.50rem !important;
+}
+
+@media (max-width: 768px) {
+  .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .btn-group .btn {
+    flex: 1 0 auto;
+  }
+  .btn-group > .btn + .btn {
+    margin-left: 0.75rem !important;
+  }
+}

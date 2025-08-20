@@ -1,0 +1,181 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-success text-white">
+      <h2 class="mb-0">Add a New Return</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #returnForm="ngForm" (ngSubmit)="save(return)">
+        <div class="row">
+          <!-- <div class="col-md-6 mb-3">
+            <label class="form-label">Return Code:</label>
+            <input type="number" name="returnCode" class="form-control" [(ngModel)]="return.returnCode" required />
+          </div> -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Select Purchase Order:</label>
+            <select name="purchaseOrder" class="form-control" (change)="onPurchaseOrderSelect($event)">
+              <option value="">-- Select Purchase Order --</option>
+              <option *ngFor="let po of purchaseOrders" [value]="po.purchaseOrderCode" [selected]="po.purchaseOrderCode === return.purchaseOrderCode">PO# {{po.purchaseOrderCode}} (Supplier: {{po.supplierName}}, Product: {{po.productName}}, Quantity: {{po.purchaseQuantity}})</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Purchase Order Code:</label>
+            <input type="number" name="purchaseOrderCode" class="form-control" [(ngModel)]="return.purchaseOrderCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Supplier Code:</label>
+            <input type="number" name="supplierCode" class="form-control" [(ngModel)]="return.supplierCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Supplier Name:</label>
+            <input type="text" name="supplierName" class="form-control" [(ngModel)]="return.supplierName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Code:</label>
+            <input type="number" name="productCode" class="form-control" [(ngModel)]="return.productCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Product Name:</label>
+            <input type="text" name="productName" class="form-control" [(ngModel)]="return.productName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Purchase Quantity:</label>
+            <input type="number" name="purchaseQuantity" class="form-control" [(ngModel)]="return.purchaseQuantity" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Return Quantity:</label>
+            <input type="number" name="returnQuantity" class="form-control" [(ngModel)]="return.returnQuantity" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Return Date:</label>
+            <input type="date" name="returnDate" class="form-control" [(ngModel)]="return.returnDate" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Reason:</label>
+            <select name="reason" class="form-control" [(ngModel)]="return.reason" required>
+              <option>Defective</option>
+              <option>Wrong Item</option>
+              <option>Excess Quantity</option>
+            </select>            
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Return</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <!-- <th>Return Code</th> -->
+          <th>Purchase Order Code</th>
+          <th>Supplier Code</th>
+          <th>Supplier Name</th>
+          <th>Product Code</th>
+          <th>Product Name</th>
+          <th>Purchase Quantity</th>
+          <th>Return Quantity</th>
+          <th>Return Date</th>
+          <th>Reason</th>
+          <th>Edit</th>
+          <th>Delete</th>          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ret of returns">
+          <!-- <td>{{ ret.returnCode }}</td> -->
+          <td>{{ ret.purchaseOrderCode }}</td>
+          <td>{{ ret.supplierCode }}</td>
+          <td>{{ ret.supplierName }}</td>
+          <td>{{ ret.productCode }}</td>
+          <td>{{ ret.productName }}</td>
+          <td>{{ ret.purchaseQuantity }}</td>
+          <td>{{ ret.returnQuantity }}</td>
+          <td>{{ ret.returnDate | date }}</td>
+          <td>{{ ret.reason }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(ret)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(ret)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Return</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #returnEditForm="ngForm" (ngSubmit)="update(updateReturn)">
+          <input type="hidden" name="id" [(ngModel)]="updateReturn.id" />
+          <div class="row">
+            <!-- <div class="col-md-6 mb-3">
+              <label class="form-label">Return Code:</label>
+              <input type="number" name="returnCode" class="form-control" [(ngModel)]="updateReturn.returnCode" required />
+            </div> -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Purchase Order:</label>
+              <select name="updatePurchaseOrder" class="form-control" (change)="onUpdatePurchaseOrderSelect($event)">
+                <option value="">-- Select Purchase Order --</option>
+                <option *ngFor="let po of purchaseOrders" [value]="po.purchaseOrderCode" [selected]="po.purchaseOrderCode === updateReturn.purchaseOrderCode">PO# {{po.purchaseOrderCode}} (Supplier: {{po.supplierName}}, Product: {{po.productName}}, Quantity: {{po.purchaseQuantity}})</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Purchase Order Code:</label>
+              <input type="number" name="purchaseOrderCode" class="form-control" [(ngModel)]="updateReturn.purchaseOrderCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Supplier Code:</label>
+              <input type="number" name="supplierCode" class="form-control" [(ngModel)]="updateReturn.supplierCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Supplier Name:</label>
+              <input type="text" name="supplierName" class="form-control" [(ngModel)]="updateReturn.supplierName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Code:</label>
+              <input type="number" name="productCode" class="form-control" [(ngModel)]="updateReturn.productCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Product Name:</label>
+              <input type="text" name="productName" class="form-control" [(ngModel)]="updateReturn.productName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Purchase Quantity:</label>
+              <input type="number" name="purchaseQuantity" class="form-control" [(ngModel)]="updateReturn.purchaseQuantity" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Return Quantity:</label>
+              <input type="number" name="returnQuantity" class="form-control" [(ngModel)]="updateReturn.returnQuantity" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Return Date:</label>
+              <input type="date" name="returnDate" class="form-control" [(ngModel)]="updateReturn.returnDate" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Reason:</label>
+              <select name="reason" class="form-control" [(ngModel)]="updateReturn.reason" required>
+                <option>Defective</option>
+                <option>Wrong Item</option>
+                <option>Excess Quantity</option>
+              </select>              
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

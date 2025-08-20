@@ -1,0 +1,93 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header text-white" style="background-color: #d702b4;">
+      <h2 class="mb-0">Add a New Designation</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #desigForm="ngForm" (ngSubmit)="save(designation)">
+        <div class="mb-3">
+          <label for="desigCode" class="form-label">Designation Code:</label>
+          <input type="number" id="desigCode" name="designationCode" class="form-control"
+                 [(ngModel)]="designation.designationCode" required>
+        </div>
+        <div class="mb-3">
+          <label for="desigName" class="form-label">Designation Name:</label>
+          <input type="text" id="desigName" name="designationName" class="form-control"
+                 [(ngModel)]="designation.designationName" required>
+        </div>
+        <!-- <div class="mb-3">
+          <label for="level" class="form-label">Level:</label>
+          <input type="number" id="level" name="level" class="form-control"
+                 [(ngModel)]="designation.level" required>
+        </div> -->
+        <button type="submit" class="btn btn-success">
+          <i class="bi bi-save"></i> Save
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Designation</h2>
+    
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Designation Code</th>
+          <th>Designation Name</th>
+          <!-- <th>Level</th> -->
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let desig of designations">
+          <td>{{ desig.designationCode }}</td>
+          <td>{{ desig.designationName }}</td>
+          <!-- <td>{{ desig.level }}</td> -->
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(desig)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(desig)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h4 class="mb-0">Update Designation</h4>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #desigEditForm="ngForm" (ngSubmit)="update(updateDesignation)">
+          <input type="hidden" name="id" [(ngModel)]="updateDesignation.id" />
+          <div class="mb-3">
+            <label class="form-label">Designation Code:</label>
+            <input type="number" class="form-control" name="designationCode"
+                   [(ngModel)]="updateDesignation.designationCode" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Designation Name:</label>
+            <input type="text" class="form-control" name="designationName"
+                   [(ngModel)]="updateDesignation.designationName" required>
+          </div>
+          <!-- <div class="mb-3">
+            <label class="form-label">Level:</label>
+            <input type="number" class="form-control" name="level"
+                   [(ngModel)]="updateDesignation.level" required>
+          </div> -->
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,145 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header text-white" style="background-color: #d702b4;">
+      <h2 class="mb-0">Add a New Customer</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #custForm="ngForm" (ngSubmit)="save(customer)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Customer Code:</label>
+            <input type="number" name="customerCode" class="form-control" [(ngModel)]="customer.customerCode" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Customer Name:</label>
+            <input type="text" name="customerName" class="form-control" [(ngModel)]="customer.customerName" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Contact Person:</label>
+            <input type="text" name="contactPerson" class="form-control" [(ngModel)]="customer.contactPerson" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Phone:</label>
+            <input type="text" name="phone" class="form-control" [(ngModel)]="customer.phone" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Email:</label>
+            <input type="email" name="email" class="form-control" [(ngModel)]="customer.email" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Address:</label>
+            <input type="text" name="address" class="form-control" [(ngModel)]="customer.address" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Tax ID:</label>
+            <input type="number" name="taxId" class="form-control" [(ngModel)]="customer.taxId" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Status:</label>
+            <select name="status" class="form-control" [(ngModel)]="customer.status">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete a Customer</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Customer Code</th>
+          <th>Customer Name</th>
+          <th>Contact Person</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Tax ID</th>
+          <th>Status</th>
+          <th>Edit</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let cust of customers">
+          <td>{{ cust.customerCode }}</td>
+          <td>{{ cust.customerName }}</td>
+          <td>{{ cust.contactPerson }}</td>
+          <td>{{ cust.phone }}</td>
+          <td>{{ cust.email }}</td>
+          <td>{{ cust.address }}</td>
+          <td>{{ cust.taxId }}</td>
+          <td>{{ cust.status }}</td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(cust)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(cust)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Customer</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #custEditForm="ngForm" (ngSubmit)="update(updateCustomer)">
+          <input type="hidden" name="id" [(ngModel)]="updateCustomer.id" />
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Customer Code:</label>
+              <input type="number" name="customerCode" class="form-control" [(ngModel)]="updateCustomer.customerCode" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Customer Name:</label>
+              <input type="text" name="customerName" class="form-control" [(ngModel)]="updateCustomer.customerName" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Contact Person:</label>
+              <input type="text" name="contactPerson" class="form-control" [(ngModel)]="updateCustomer.contactPerson" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Phone:</label>
+              <input type="text" name="phone" class="form-control" [(ngModel)]="updateCustomer.phone" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Email:</label>
+              <input type="email" name="email" class="form-control" [(ngModel)]="updateCustomer.email" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Address:</label>
+              <input type="text" name="address" class="form-control" [(ngModel)]="updateCustomer.address" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Tax ID:</label>
+              <input type="number" name="taxId" class="form-control" [(ngModel)]="updateCustomer.taxId" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status:</label>
+              <select name="status" class="form-control" [(ngModel)]="updateCustomer.status">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Inventory Management</h2>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-striped text-center align-middle shadow">
+        <thead class="table-dark">
+          <tr>
+            <th>Product Code</th>
+            <th>Product Name</th>
+            <th>Purchased</th>
+            <th>Returned to Supplier</th>
+            <th>Sold</th>
+            <th>Returned from Customer</th>
+            <th>Available Quantity</th>
+            <th>Reorder Level</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of inventories">
+            <td>{{ item.productCode }}</td>
+            <td>{{ item.productName }}</td>
+            <td>{{ item.purchasedQuantity }}</td>
+            <td>{{ item.returnedToSupplier }}</td>
+            <td>{{ item.soldQuantity }}</td>
+            <td>{{ item.returnedFromCustomer }}</td>
+            <td [class.text-danger]="item.availableQuantity <= 0" 
+                [class.text-low-warning]="item.availableQuantity > 0 && item.availableQuantity <= item.reorderLevel"
+                [class.text-success]="item.availableQuantity > item.reorderLevel">
+              {{ item.availableQuantity }}
+              <span *ngIf="item.availableQuantity <= 0" class="badge bg-danger text-white ms-2">Out of Stock</span>
+              <span *ngIf="item.availableQuantity > 0 && item.availableQuantity <= item.reorderLevel" class="badge bg-warning text-dark ms-2">Low Stock</span>
+              <span *ngIf="item.availableQuantity > item.reorderLevel" class="badge bg-success text-white ms-2">In Stock</span>
+            </td>
+            <td>{{ item.reorderLevel }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

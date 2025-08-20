@@ -1,0 +1,12 @@
+/* Optional custom styles */
+.table {
+  font-size: 0.9rem;
+}
+
+.badge {
+  font-size: 0.7rem;
+}
+
+.text-low-warning {
+  color: #cc9900; /* গাঢ় হলুদ */
+}

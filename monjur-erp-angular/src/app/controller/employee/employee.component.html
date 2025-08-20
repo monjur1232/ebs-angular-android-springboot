@@ -1,0 +1,370 @@
+<div class="container-fluid mt-5">
+  <div class="card shadow-lg">
+    <div class="card-header bg-primary text-white">
+      <h2 class="mb-0">Add a New Employee</h2>
+    </div>
+    <div class="card-body">
+      <form autocomplete="off" #empForm="ngForm" (ngSubmit)="save(employee)">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Employee Code:</label>
+            <input type="number" name="employeeCode" class="form-control" [(ngModel)]="employee.employeeCode" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">First Name:</label>
+            <input type="text" name="firstName" class="form-control" [(ngModel)]="employee.firstName" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Last Name:</label>
+            <input type="text" name="lastName" class="form-control" [(ngModel)]="employee.lastName" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Gender:</label>
+            <select name="gender" class="form-control" [(ngModel)]="employee.gender" required>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Phone:</label>
+            <input type="text" name="phone" class="form-control" [(ngModel)]="employee.phone" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Email:</label>
+            <input type="email" name="email" class="form-control" [(ngModel)]="employee.email" required />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Address:</label>
+            <input type="text" name="address" class="form-control" [(ngModel)]="employee.address" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Date of Birth:</label>
+            <input type="date" name="dateOfBirth" class="form-control" [(ngModel)]="employee.dateOfBirth" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Hire Date:</label>
+            <input type="date" name="hireDate" class="form-control" [(ngModel)]="employee.hireDate" />
+          </div>
+          <!-- <div class="col-md-6 mb-3">
+            <label class="form-label">Salary:</label>
+            <input type="number" name="salary" class="form-control" [(ngModel)]="employee.salary" />
+          </div> -->
+          <!-- For Department Name & Code Start -->
+          <!-- Department Dropdown -->
+          <div class="col-md-6 mb-3">
+          <label class="form-label">Select Department:</label>
+          <select name="department" class="form-control" (change)="onDepartmentSelect($event)" required>
+            <option value="">-- Select Department --</option>
+            <option *ngFor="let dept of departments" [value]="dept.departmentCode" [selected]="dept.departmentCode === employee.departmentCode">{{dept.departmentName}} ({{dept.departmentCode}})</option>
+          </select>
+          </div>
+          <!-- Auto-filled Department Code -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Department Code:</label>
+            <input type="number" name="departmentCode" class="form-control" [(ngModel)]="employee.departmentCode" readonly />
+          </div>
+          <!-- Auto-filled Department Name -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Department Name:</label>
+            <input type="text" name="departmentName" class="form-control" [(ngModel)]="employee.departmentName" readonly />
+          </div>
+          <!-- For Department Name & Code End -->
+          <div class="col-md-6 mb-3">
+          <label class="form-label">Select Designation:</label>
+          <select name="designation" class="form-control" (change)="onDesignationSelect($event)" required>
+            <option value="">-- Select Designation --</option>
+            <option *ngFor="let desg of designations" [value]="desg.designationCode" [selected]="desg.designationCode === employee.designationCode">{{desg.designationName}} ({{desg.designationCode}})</option>
+          </select>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Designation Code:</label>
+            <input type="number" name="designationCode" class="form-control" [(ngModel)]="employee.designationCode" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Designation Name:</label>
+            <input type="text" name="designationName" class="form-control" [(ngModel)]="employee.designationName" readonly />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Status:</label>
+            <select name="status" class="form-control" [(ngModel)]="employee.status">
+              <option>Active</option>
+              <option>Inactive</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success"><i class="bi bi-save"></i> Save</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <h2 class="mb-4 text-center text-primary">Edit or Delete an Employee</h2>
+
+    <table class="table table-bordered table-striped text-center align-middle shadow">
+      <thead class="table-dark">
+        <tr>
+          <th>Employee Code</th>
+          <th>Name</th>
+          <th>Gender</th>
+          <th>Phone</th>
+          <th>Email</th>
+          <th>Address</th>
+          <th>Date of Birth</th>
+          <th>Hire Date</th>
+          <!-- <th>Salary</th> -->
+          <!-- <th>Department Code</th> -->
+          <th>Department Name</th>
+          <!-- <th>Designation Code</th> -->
+          <th>Designation Name</th>
+          <th>Status</th>
+          <th>Details</th>
+          <th>Edit</th>
+          <th>Delete</th>          
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let emp of employees">
+          <td>{{ emp.employeeCode }}</td>
+          <td>{{ emp.firstName }} {{ emp.lastName }}</td>
+          <td>{{ emp.gender }}</td>
+          <td>{{ emp.phone }}</td>
+          <td>{{ emp.email }}</td>
+          <td>{{ emp.address }}</td>
+          <td>{{ emp.dateOfBirth | date }}</td>
+          <td>{{ emp.hireDate | date }}</td>
+          <!-- <td>{{ emp.salary }}</td> -->
+          <!-- <td>{{ emp.departmentCode }}</td> -->
+          <td>{{ emp.departmentName }}</td>
+          <!-- <td>{{ emp.designationCode }}</td> -->
+          <td>{{ emp.designationName }}</td>
+          <td>{{ emp.status }}</td>
+          <td>
+            <button class="btn btn-info btn-sm" (click)="openDetailsModal(emp)">
+              <i class="bi bi-eye-fill"></i> Details
+           </button>
+          </td>
+          <td>
+            <button class="btn btn-warning btn-sm" (click)="edit(emp)">
+              <i class="bi bi-pencil-square"></i> Edit
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-danger btn-sm" (click)="delete(emp)">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="divStatus" class="mt-5">
+    <div class="card shadow-lg">
+      <div class="card-header bg-info text-white">
+        <h2 class="mb-0">Update Employee</h2>
+      </div>
+      <div class="card-body">
+        <form autocomplete="off" #empEditForm="ngForm" (ngSubmit)="update(updateEmployee)">
+          <input type="hidden" name="id" [(ngModel)]="updateEmployee.id" />
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Employee Code:</label>
+              <input type="number" name="employeeCode" class="form-control" [(ngModel)]="updateEmployee.employeeCode" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">First Name:</label>
+              <input type="text" name="firstName" class="form-control" [(ngModel)]="updateEmployee.firstName" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Last Name:</label>
+              <input type="text" name="lastName" class="form-control" [(ngModel)]="updateEmployee.lastName" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Gender:</label>
+              <select name="gender" class="form-control" [(ngModel)]="updateEmployee.gender" required>
+                <option>Male</option>
+                <option>Female</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Phone:</label>
+              <input type="text" name="phone" class="form-control" [(ngModel)]="updateEmployee.phone" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Email:</label>
+              <input type="email" name="email" class="form-control" [(ngModel)]="updateEmployee.email" required />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Address:</label>
+              <input type="text" name="address" class="form-control" [(ngModel)]="updateEmployee.address" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Date of Birth:</label>
+              <input type="date" name="dateOfBirth" class="form-control" [(ngModel)]="updateEmployee.dateOfBirth" />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Hire Date:</label>
+              <input type="date" name="hireDate" class="form-control" [(ngModel)]="updateEmployee.hireDate" />
+            </div>
+            <!-- <div class="col-md-6 mb-3">
+              <label class="form-label">Salary:</label>
+              <input type="number" name="salary" class="form-control" [(ngModel)]="updateEmployee.salary" />
+            </div> -->
+            <!-- For Department Name & Code Start -->
+            <!-- Department Dropdown for Update -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Department:</label>
+              <select name="updateDepartment" class="form-control" (change)="onUpdateDepartmentSelect($event)" required>
+                <option value="">-- Select Department --</option>
+                <option *ngFor="let dept of departments" [value]="dept.departmentCode" [selected]="dept.departmentCode === updateEmployee.departmentCode">{{dept.departmentName}} ({{dept.departmentCode}})</option>
+              </select>
+            </div>
+            <!-- Auto-filled Department Code -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Department Code:</label>
+              <input type="number" name="departmentCode" class="form-control" [(ngModel)]="updateEmployee.departmentCode" readonly />
+            </div>
+            <!-- Auto-filled Department Name -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Department Name:</label>
+              <input type="text" name="departmentName" class="form-control" [(ngModel)]="updateEmployee.departmentName" readonly />
+            </div>
+            <!-- For Department Name & Code End -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Select Designation:</label>
+              <select name="updateDesignation" class="form-control" (change)="onUpdateDesignationSelect($event)" required>
+                <option value="">-- Select Designation --</option>
+                <option *ngFor="let desg of designations" [value]="desg.designationCode" [selected]="desg.designationCode === updateEmployee.designationCode">{{desg.designationName}} ({{desg.designationCode}})</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Designation Code:</label>
+              <input type="number" name="designationCode" class="form-control" [(ngModel)]="updateEmployee.designationCode" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Designation Name:</label>
+              <input type="text" name="designationName" class="form-control" [(ngModel)]="updateEmployee.designationName" readonly />
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Status:</label>
+              <select name="status" class="form-control" [(ngModel)]="updateEmployee.status">
+                <option>Active</option>
+                <option>Inactive</option>
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="bi bi-arrow-repeat"></i> Update
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Employee Details Modal -->
+<div class="modal fade" id="employeeDetailsModal" tabindex="-1" aria-labelledby="employeeDetailsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-fullscreen-sm-down">
+    <div class="modal-content shadow-lg rounded-4 border-0" style="background: #f9fafb;">
+
+      <!-- Modal Header -->
+      <div 
+        class="modal-header rounded-top-4 text-white" 
+        style="background: linear-gradient(135deg, #667eea, #764ba2); box-shadow: 0 4px 15px rgba(118, 75, 162, 0.5);">
+        <h5 class="modal-title fw-bold" id="employeeDetailsModalLabel">
+          <i class="bi bi-person-badge-fill me-2"></i>Employee Details
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body bg-light p-4">
+        <div class="container">
+          <div class="row g-4">
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Employee Code:</span><br>
+              <span class="fs-5">{{ selectedEmployee.employeeCode }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">First Name:</span><br>
+              <span class="fs-5">{{ selectedEmployee.firstName }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Last Name:</span><br>
+              <span class="fs-5">{{ selectedEmployee.lastName }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Gender:</span><br>
+              <span class="fs-5">{{ selectedEmployee.gender }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Phone:</span><br>
+              <span class="fs-5">{{ selectedEmployee.phone }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Email:</span><br>
+              <span class="fs-5">{{ selectedEmployee.email }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Address:</span><br>
+              <span class="fs-5">{{ selectedEmployee.address }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Date of Birth:</span><br>
+              <span class="fs-5">{{ selectedEmployee.dateOfBirth | date:'longDate' }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Hire Date:</span><br>
+              <span class="fs-5">{{ selectedEmployee.hireDate | date:'longDate' }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Department Code:</span><br>
+              <span class="fs-5">{{ selectedEmployee.departmentCode }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Department Name:</span><br>
+              <span class="fs-5">{{ selectedEmployee.departmentName }}</span>
+            </div>
+            
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Designation Code:</span><br>
+              <span class="fs-5">{{ selectedEmployee.designationCode }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Designation Name:</span><br>
+              <span class="fs-5">{{ selectedEmployee.designationName }}</span>
+            </div>
+
+            <div class="col-md-6">
+              <span class="fw-semibold text-primary">Status:</span><br>
+              <span class="fs-5">{{ selectedEmployee.status }}</span>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div 
+        class="modal-footer rounded-bottom-4" 
+        style="background: linear-gradient(135deg, #764ba2, #667eea); box-shadow: 0 -4px 15px rgba(118, 75, 162, 0.5);">
+        <button type="button" class="btn btn-light fw-semibold" data-bs-dismiss="modal">
+          <i class="bi bi-x-circle me-1"></i> Close
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
